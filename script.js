@@ -178,7 +178,7 @@ function createCategoryContainer(options, ...keys) {
  * プロンプトセレクターを初期化する関数
  */
 async function initializePromptSelector() {
-    const data = prompts;
+    const data = await (await fetch("./data.json")).json();
 
     if (data) {
         // 取得したデータをもとにカテゴリーを生成
