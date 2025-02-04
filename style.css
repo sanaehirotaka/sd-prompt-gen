@@ -47,15 +47,16 @@
     background-color: #f8f9fa;
 }
 
-#selected-list li:last-child {
-    border-bottom: none;
+#selected-list li > .badge:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
+#selected-list li > .badge:nth-child(n+3),
+#selected-list li > .badge + .badge {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+} 
 
 .close-button {
-    margin-left: 5px;
     cursor: pointer;
-    font-size: 0.9em;
-    color: indianred;
-    line-height: 1; /* 行の高さを1にする */
-    vertical-align: middle;/* 中央に配置 */
 }

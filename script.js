@@ -6,32 +6,6 @@ const selectedPromptText = document.getElementById('selected-prompt-text');
 // 選択されたプロンプトを格納する配列
 let selectedPrompts = [];
 
-// ドラッグ開始時に呼ばれる関数
-function handleDragStart(event) {
-    event.dataTransfer.setData('text/plain', event.target.dataset.index);
-}
-
-// ドラッグ中の要素がドロップ領域上にある場合に呼ばれる関数
-function handleDragOver(event) {
-    event.preventDefault();
-}
-
-// ドロップ時に呼ばれる関数
-function handleDrop(event) {
-    event.preventDefault();
-    const draggedIndex = event.dataTransfer.getData('text/plain');
-    const targetIndex = Array.from(selectedList.children).indexOf(event.target.closest("li"));
-
-    if (draggedIndex === -1 || targetIndex === -1 || draggedIndex === targetIndex) return; // 同じ位置へのドロップは無視
-
-    // selectedPromptsの並び替え
-    const draggedItem = selectedPrompts[draggedIndex];
-    selectedPrompts.splice(draggedIndex, 1);
-    selectedPrompts.splice(targetIndex, 0, draggedItem);
-
-    updateSelectedPrompts(); // 選択されたプロンプトの表示を更新
-}
-
 /**
  * 選択肢のボタンを生成する関数
  * @param {string} text - プロンプトのテキスト（英語）
@@ -83,31 +57,30 @@ function updateSelectedPrompts() {
     // 選択されたプロンプトをリストに表示
     selectedPrompts.forEach((item, index) => {
         const li = document.createElement('li');
-        li.classList.add("option-item");
-        li.setAttribute("draggable", true);
-        li.dataset.index = index;
-        li.addEventListener('dragstart', handleDragStart);
+        li.classList.add("align-items-center");
+        li.dataset.japaneseText = item.japaneseText;
 
-        const small = document.createElement("small");
-        small.classList.add("badge", "bg-secondary", "d-flex", "align-items-center");
-        small.textContent = `${item.japaneseText}`;
+        {
+            const closeButton = document.createElement("span");
+            closeButton.classList.add("badge", "bg-danger", "text-light", "close-button");
+            closeButton.innerHTML = "&times;";
+            closeButton.addEventListener("click", (event) => {
+                removeSelectedPrompt(item.text, item.keys, event.target);
+            });
+            li.append(closeButton);
+        }
+        {
+            const block = document.createElement("span");
+            block.classList.add("badge", "bg-secondary");
+            block.textContent = `${item.japaneseText}`;
+            li.append(block);
+        }
 
-        const closeButton = document.createElement("span");
-        closeButton.classList.add("close-button");
-        closeButton.innerHTML = "&times;";
-        // バッジの×ボタンがクリックされた時の処理
-        closeButton.addEventListener("click", (event) => {
-            event.stopPropagation(); //親要素への伝播を防ぐ
-            removeSelectedPrompt(item.text, item.keys, event.target);
-        });
-
-        small.append(closeButton);
-        li.append(small);
         list.appendChild(li);
         prompt.push(item.text);
     });
     selectedList.replaceChildren(list);
-    selectedPromptText.value = prompt.join(", ");
+    selectedPromptText.textContent = prompt.join(", ");
 }
 
 /**
@@ -121,8 +94,8 @@ function removeSelectedPrompt(text, keys, target) {
     selectedPrompts = selectedPrompts.filter(item => !(item.text === text && item.keys === keys));
 
     // 対応するボタンを取得し、選択状態を解除
-    const button = Array.from(promptSelector.querySelectorAll('.option-button'))
-        .find(button => button.dataset.category === keys && button.textContent === target.closest("small").textContent.replace("×", ""));
+    const button = Array.from(promptSelector.querySelectorAll('.option-button.selected'))
+        .find(button => button.dataset.category === keys && button.textContent === target.closest("li").dataset.japaneseText);
     if (button) {
         button.classList.remove('selected');
     }
@@ -173,12 +146,57 @@ function createCategoryContainer(options, ...keys) {
     return [container]; // コンテナ要素を配列に入れて返す
 }
 
+async function loadData() {
+    try {
+        return await (await fetch("./data.json")).json();
+    } catch {
+        // テスト用
+        return {
+            "基本情報": {
+                "品質": [
+                    ["最高傑作", "best quality"],
+                    ["傑作", "masterpiece"],
+                    ["高画質", "high quality"],
+                ],
+                "画風": [
+                    ["写実的", "photorealistic"],
+                ],
+                "シーン/背景": {
+                    "場所": {
+                        "室内": [
+                            ["屋内", "indoors"],
+                            ["リビング", "living room"],
+                            ["ダイニングルーム", "dining room"],
+                            ["キッチン", "kitchen"],
+                            ["ベッドルーム", "bedroom"],
+                        ],
+                        "屋外": [
+                            ["屋外", "outdoors"],
+                            ["公園", "park"],
+                            ["広場", "plaza"],
+                            ["街中", "city"],
+                            ["路地裏", "back alley"],
+                            ["市場", "market"],
+                            ["森林", "forest"],
+                            ["山", "mountain"],
+                        ],
+                        "ファンタジー": [
+                            ["ファンタジー世界", "fantasy world"],
+                            ["城", "castle"],
+                            ["古代遺跡", "ancient ruins"]
+                        ]
+                    }
+                }
+            }
+        };
+    }
+}
 
 /**
  * プロンプトセレクターを初期化する関数
  */
 async function initializePromptSelector() {
-    const data = await (await fetch("./data.json")).json();
+    const data = await loadData();
 
     if (data) {
         // 取得したデータをもとにカテゴリーを生成
@@ -186,8 +204,6 @@ async function initializePromptSelector() {
             // トップレベルのカテゴリーから順に生成
             createCategoryContainer(data[category], category).forEach(element => promptSelector.appendChild(element));
         }
-        selectedList.addEventListener('dragover', handleDragOver);
-        selectedList.addEventListener('drop', handleDrop);
     }
 }
 
