@@ -569,7 +569,6 @@
             [ "魔法のメイク", "magical makeup" ]
         ],
         "タトゥー/傷跡": [
-            [ "なし", "no tattoos, no scars" ],
             [ "タトゥー", "tattoo" ],
             [ "花", "flower tattoo" ],
             [ "動物", "animal tattoo" ],
@@ -907,7 +906,6 @@
                     [ "服がずり落ちそう", "clothing is slipping off" ],
                     [ "服が大きく開いている", "clothing is widely open" ],
                     [ "服が乱れている", "disheveled clothing" ],
-                    [ "服がはだけて肌が見える", "clothing is open, revealing skin" ],
                     [ "ボタンが外れたシャツ", "unbuttoned shirt" ],
                     [ "ジッパーが開いたジャケット", "unzipped jacket" ],
                     [ "肩から服が落ちかけている", "clothing slipping off the shoulder" ],
@@ -915,7 +913,6 @@
                     [ "着崩したシャツ", "loosely worn shirt" ],
                     [ "服の襟元が開いている", "open neckline" ],
                     [ "胸元が開いた服", "open-chested clothing" ],
-                    [ "服が大きくはだけて胸が見える", "clothing is largely open, revealing the bust" ],
                     [ "風で服がめくれ上がった", "clothing is blown up by the wind" ],
                     [ "動きで服が乱れた", "clothing is disheveled by movement" ],
                     [ "激しい動きで服がはだけた", "clothing is opened by intense movement" ],

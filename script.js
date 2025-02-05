@@ -2,7 +2,10 @@
 const promptSelector = document.getElementById('prompt-selector');
 const selectedList = document.getElementById('selected-list');
 const selectedPromptText = document.getElementById('selected-prompt-text');
+const addGroup = document.getElementById('add-group');
+const removeGroup = document.getElementById('remove-group');
 
+let promptOrder = [];
 // 選択されたプロンプトを格納する配列
 let selectedPrompts = [];
 
@@ -17,7 +20,9 @@ function createOptionButton(text, japaneseText, ...keys) {
     const button = document.createElement('button'); // ボタン要素を生成
     button.textContent = japaneseText; // ボタンのテキストを日本語で設定
     button.classList.add('option-button', 'btn-sm'); // Bootstrapのスタイルとクラスを追加
-    button.dataset.category = keys.join("-")
+    button.dataset.category = keys.join("-");
+    button.dataset.text = text;
+    button.dataset.japaneseText = japaneseText;
 
     // ボタンがクリックされた時のイベントリスナーを設定
     button.addEventListener('click', () => handleOptionClick(text, japaneseText, button, ...keys));
@@ -41,46 +46,93 @@ function handleOptionClick(text, japaneseText, button, ...keys) {
     } else {
         // 選択されていない場合は、選択状態にし、selectedPromptsに追加
         button.classList.add('selected');
-        selectedPrompts.push({ text, japaneseText, keys: keys.join("-") });
+        selectedPrompts.push({
+            text,
+            japaneseText,
+            group: undefined,
+            keys: keys.join("-")
+        });
     }
     updateSelectedPrompts(); // 選択されたプロンプトの表示を更新
+}
+function sortPrompts() {
+    const groupIndex = selectedPrompts
+        .map(({ group }, index) => [group, index])
+        .filter(([group]) => group)
+        .reduce((map, [group, index]) => {
+            map[group] = Math.min(map[group] ?? Number.MAX_SAFE_INTEGER, promptOrder[`${selectedPrompts[index].keys}-${selectedPrompts[index].japaneseText}`]);
+            return map;
+        }, {});
+    selectedPrompts = selectedPrompts.sort((a, b) => {
+        if (a.group == b.group) {
+            return promptOrder[`${a.keys}-${a.japaneseText}`] - promptOrder[`${b.keys}-${b.japaneseText}`];
+        }
+        const aIndex = groupIndex[a.group] ?? promptOrder[`${a.keys}-${a.japaneseText}`];
+        const bIndex = groupIndex[b.group] ?? promptOrder[`${b.keys}-${b.japaneseText}`];
+        return aIndex - bIndex;
+    });
 }
 
 /**
  * 選択されたプロンプトの表示を更新する関数
  */
 function updateSelectedPrompts() {
-    // 選択されたプロンプトのリストをクリア
+    sortPrompts();
     const list = document.createDocumentFragment();
-    const prompt = [];
 
-    // 選択されたプロンプトをリストに表示
-    selectedPrompts.forEach((item, index) => {
-        const li = document.createElement('li');
-        li.classList.add("align-items-center");
-        li.dataset.japaneseText = item.japaneseText;
+    for (const groupPrompt of getGroupedPrompts()) {
+        const prompts = Array.isArray(groupPrompt) ? groupPrompt : [groupPrompt];
+        let group = list;
+        if (Array.isArray(groupPrompt)) {
+            const li = document.createElement('li');
+            group = document.createElement('ul');
+            group.classList.add("list-unstyled");
+            li.append(group);
+            list.append(li);
+        }
+        for (const prompt of prompts) {
+            const li = document.createElement('li');
+            li.dataset.japaneseText = prompt.japaneseText;
+            li.classList.add("d-flex")
+            group.appendChild(li);
 
-        {
-            const closeButton = document.createElement("span");
-            closeButton.classList.add("badge", "bg-danger", "text-light", "close-button");
-            closeButton.innerHTML = "&times;";
-            closeButton.addEventListener("click", (event) => {
-                removeSelectedPrompt(item.text, item.keys, event.target);
+            const wrap = document.createElement("div");
+            wrap.classList.add("flex-fill");
+            li.append(wrap);
+
+            const inputGroup = document.createElement("div");
+            inputGroup.classList.add("input-group", "input-group-sm");
+            wrap.append(inputGroup);
+
+            const checkBoxWrap = document.createElement("div");
+            checkBoxWrap.classList.add("input-group-text");
+            inputGroup.append(checkBoxWrap);
+
+            const checkBox = document.createElement("input");
+            checkBox.setAttribute("type", "checkbox");
+            checkBox.classList.add("form-check-input");
+            checkBox.dataset.category = prompt.keys;
+            checkBox.dataset.text = prompt.text;
+            checkBox.dataset.japaneseText = prompt.japaneseText;
+            checkBoxWrap.append(checkBox);
+
+            const closeBtn = document.createElement("button");
+            closeBtn.classList.add("btn", "btn-danger");
+            closeBtn.addEventListener("click", event => {
+                removeSelectedPrompt(prompt.text, prompt.keys, event.target);
             });
-            li.append(closeButton);
+            inputGroup.append(closeBtn);
+            const icon = document.createElement("i");
+            icon.classList.add("bi", "bi-x-circle");
+            closeBtn.append(icon);
+            const text = document.createElement("span");
+            text.classList.add("input-group-text");
+            text.append(prompt.japaneseText);
+            inputGroup.append(text);
         }
-        {
-            const block = document.createElement("span");
-            block.classList.add("badge", "bg-secondary");
-            block.textContent = `${item.japaneseText}`;
-            li.append(block);
-        }
-
-        list.appendChild(li);
-        prompt.push(item.text);
-    });
+    }
     selectedList.replaceChildren(list);
-    selectedPromptText.textContent = prompt.join(", ");
+    selectedPromptText.textContent = getGroupedPrompts().map(g => Array.isArray(g) ? `(${g.map(p => p.text).join(", ")})` : g.text).join(", ");
 }
 
 /**
@@ -192,20 +244,88 @@ async function loadData() {
     }
 }
 
+function* promptOrderList(parentKeys, obj) {
+    for (const child in obj) {
+        const childKeys = [...parentKeys, child];
+        if (Array.isArray(obj[child])) {
+            for (const [value] of obj[child]) {
+                yield [...childKeys, value];
+            }
+        } else {
+            yield* promptOrderList(childKeys, obj[child]);
+        }
+    }
+}
+
 /**
  * プロンプトセレクターを初期化する関数
  */
 async function initializePromptSelector() {
     const data = await loadData();
+    promptOrder = Object.fromEntries([...promptOrderList([], data)].map(p => p.join("-")).map((v, i) => [v, i]))
 
     if (data) {
         // 取得したデータをもとにカテゴリーを生成
         for (const category in data) {
             // トップレベルのカテゴリーから順に生成
-            createCategoryContainer(data[category], category).forEach(element => promptSelector.appendChild(element));
+            createCategoryContainer(data[category], category)
+                .forEach(element => promptSelector.appendChild(element));
         }
     }
 }
 
+function getCheckedPrompts() {
+    return [...selectedList.querySelectorAll("input:checked")]
+        .map(e => selectedPrompts.find(item => item.keys == e.dataset.category && item.japaneseText == e.dataset.japaneseText));
+}
+function getGroupedPrompts() {
+    const groupedPrompts = [];
+    for (const prompt of selectedPrompts) {
+        if (prompt.group) {
+            let group;
+            if (groupedPrompts.length == 0 || !Array.isArray(groupedPrompts[groupedPrompts.length - 1]) || groupedPrompts[groupedPrompts.length - 1][0].group != prompt.group) {
+                groupedPrompts.push(group = []);
+            } else {
+                group = groupedPrompts[groupedPrompts.length - 1];
+            }
+            group.push(prompt);
+        } else {
+            groupedPrompts.push(prompt);
+        }
+    }
+    return groupedPrompts;
+}
+
+selectedList.addEventListener("input", event => {
+    const checkedPrompts = getCheckedPrompts();
+    const isMultigroup = new Set(checkedPrompts.filter(p => p.group).map(p => p.group)).size > 1;
+    if (checkedPrompts.some(p => !p.group) || isMultigroup) {
+        addGroup.removeAttribute("disabled");
+    } else {
+        addGroup.setAttribute("disabled", "");
+    }
+    if (checkedPrompts.some(p => p.group)) {
+        removeGroup.removeAttribute("disabled");
+    } else {
+        removeGroup.setAttribute("disabled", "");
+    }
+});
+
+addGroup.addEventListener("click", event => {
+    const checkedPrompts = getCheckedPrompts();
+    const group = checkedPrompts.find(p => p.group)?.group ?? Date.now();
+    checkedPrompts.forEach(p => p.group = group);
+    updateSelectedPrompts();
+    addGroup.setAttribute("disabled", "");
+    removeGroup.setAttribute("disabled", "");
+});
+
+removeGroup.addEventListener("click", event => {
+    const checkedPrompts = getCheckedPrompts();
+    checkedPrompts.forEach(p => p.group = undefined);
+    updateSelectedPrompts();
+    addGroup.setAttribute("disabled", "");
+    removeGroup.setAttribute("disabled", "");
+});
 // プロンプトセレクターの初期化を開始
 initializePromptSelector();

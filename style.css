@@ -47,16 +47,15 @@
     background-color: #f8f9fa;
 }
 
-#selected-list li > .badge:not(:last-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+#selected-list .btn {
+    --bs-btn-padding-y: .25rem;
+    --bs-btn-padding-x: .5rem;
 }
-#selected-list li > .badge:nth-child(n+3),
-#selected-list li > .badge + .badge {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-} 
-
-.close-button {
-    cursor: pointer;
+#selected-list li {
+    margin: 0.1rem 0;
+}
+#selected-list ul {
+    border-left: 2px solid lightgrey;
+    padding-left: 0.25rem;
+    margin: 0.25rem 0;
 }
