@@ -58,6 +58,7 @@
                     [ "ダイニングルーム", "dining room" ],
                     [ "キッチン", "kitchen" ],
                     [ "ベッドルーム", "bedroom" ],
+                    [ "寝室", "boudoir" ],
                     [ "バスルーム", "bathroom" ],
                     [ "トイレ", "toilet" ],
                     [ "書斎", "study room" ],
@@ -150,6 +151,11 @@
                     [ "潜水艦", "submarine" ],
                     [ "宇宙ステーション", "space station" ]
                 ],
+                "イベント": [
+                    [ "カクテルパーティ", "cocktail party" ],
+                    [ "ガラパーティ", "gala event" ],
+                    [ "ナイトクラブ", "night club" ]
+                ],
                 "ファンタジー": [
                     [ "ファンタジー世界", "fantasy world" ],
                     [ "城", "castle" ],
@@ -209,14 +215,18 @@
             [ "炎", "fire light" ],
             [ "月光", "moonlight" ],
             [ "星明かり", "starlight" ],
-            [ "魔法の光", "magical light" ]
+            [ "魔法の光", "magical light" ],
+            [ "ドラマチックな照明", "dramatic lighting" ],
+            [ "スタジオ照明", "studio lighting" ],
+            [ "カラフルなライト", "colorful lights" ]
         ],
         "画角": [
             [ "全身", "full shot" ],
             [ "上半身", "medium shot" ],
             [ "バストアップ", "bust shot" ],
             [ "顔のアップ", "close-up shot" ],
-            [ "クローズアップ", "extreme close-up shot" ]
+            [ "クローズアップ", "extreme close-up shot" ],
+            [ "アクションショット", "action shot" ]
         ],
         "構図": {
             "基本的な構図": [
@@ -229,7 +239,6 @@
                 [ "二点透視", "two point perspective" ]
             ],
             "遠近感": [
-                [ "遠近感のある", "depth of field" ],
                 [ "ぼかし", "bokeh" ]
             ],
             "装飾的な構図": [
@@ -354,6 +363,7 @@
             [ "シュールな", "surreal" ],
             [ "ロマンチック", "romantic" ],
             [ "魅惑的な", "alluring" ],
+            [ "エロティック", "erotic" ],
             [ "官能的な", "sensual" ],
             [ "色っぽい", "come-hither" ],
             [ "魅惑的な", "seductive" ],
@@ -365,8 +375,8 @@
             [ "悲しい", "sad" ],
             [ "怖い", "scary" ],
             [ "不気味な", "eerie" ],
-            [ "豊満な", "voluptuous" ],
-            [ "威圧的な", "imposing" ]
+            [ "威圧的な", "imposing" ],
+            [ "決意に満ちた", "determined" ]
         ]
     },
     "外見的特徴": {
@@ -388,12 +398,11 @@
             [ "細身", "slender" ],
             [ "華奢", "delicate build" ],
             [ "小柄", "petite" ],
-            [ "スレンダー", "slender" ],
             [ "ウエストが細い", "narrow waist" ],
             [ "足が長い", "long legs" ],
             [ "曲線美", "curvy figure" ],
             [ "くびれのある体型", "hourglass figure" ],
-            [ "細身だが胸筋がある", "lean but has chest muscles" ],
+            [ "ボンキュッボン", "curvaceous figure" ],
             [ "筋肉隆々", "heavily muscled" ],
             [ "引き締まった筋肉", "toned muscles" ],
             [ "細マッチョ", "lean muscled" ],
@@ -528,7 +537,6 @@
                 [ "かきあげヘア", "swept-back hair" ],
                 [ "ポニーテール", "ponytail" ],
                 [ "お団子", "bun hair" ],
-                [ "三つ編み", "braided hair" ],
                 [ "アフロヘア", "afro hair" ],
                 [ "ボブヘア", "bob hair" ],
                 [ "刈り上げ", "shaved hair" ],
@@ -536,23 +544,36 @@
                 [ "触覚のような髪", "antennae-like hair" ]
             ]
         },
-        "胸": [
-            [ "平坦な胸", "flat chest" ],
-            [ "控えめな胸", "modest bust" ],
-            [ "やや小さい胸", "slightly small bust" ],
-            [ "非常に小さい胸", "very small bust" ],
-            [ "やや大きい胸", "slightly large bust" ],
-            [ "ハリのある胸", "firm bust" ],
-            [ "ボリュームのある胸", "voluminous bust" ],
-            [ "豊満な胸", "ample bust" ],
-            [ "谷間が見える胸", "cleavage bust" ],
-            [ "非常に大きい胸", "very large bust" ],
-            [ "細身だが胸筋がある", "lean but has chest muscles" ],
-            [ "胸筋が発達した", "developed chest muscles" ]
-        ],
+        "胸": {
+            "大きさ": [
+                [ "平坦な胸", "flat chest" ],
+                [ "控えめな胸", "modest bust" ],
+                [ "やや小さい胸", "slightly small bust" ],
+                [ "非常に小さい胸", "very small bust" ],
+                [ "やや大きい胸", "slightly large bust" ],
+                [ "大きい胸", "large bust" ],
+                [ "非常に大きい胸", "very large bust" ]
+            ],
+            "形状": [
+                [ "ハリのある胸", "firm bust" ],
+                [ "ボリュームのある胸", "voluminous bust" ],
+                [ "豊満な胸", "ample bust" ],
+                [ "ふっくらとした胸", "plump bust" ],
+                [ "丸みのある胸", "full bust" ]
+            ],
+            "状態": [
+                [ "谷間が見える胸", "cleavage" ],
+                [ "胸元が開いている", "chest area is open" ],
+                [ "胸が強調されている", "bust is emphasized" ],
+                [ "ブラジャーのラインが見える", "bra line visible" ],
+                [ "乳首が透けて見える", "nipples visible through clothing" ],
+                [ "アンダーバストが見える", "underboob visible" ]
+            ]
+        },
         "メガネ/サングラス": [
             [ "メガネ", "glasses" ],
             [ "サングラス", "sunglasses" ],
+            [ "伊達メガネ", "fashion glasses" ],
             [ "スクエア型", "square glasses" ],
             [ "ラウンド型", "round glasses" ],
             [ "キャットアイ型", "cat eye glasses" ],
@@ -629,7 +650,6 @@
                 [ "瞑想する", "meditating" ],
                 [ "ストレッチをする", "stretching" ],
                 [ "準備運動をする", "stretching exercises" ],
-                [ "ストレッチ", "stretching" ],
                 [ "ウォーミングアップ", "warming up" ],
                 [ "プールサイドに座る", "sitting by the poolside" ],
                 [ "プールサイドに立つ", "standing by the poolside" ],
@@ -640,9 +660,7 @@
                 [ "ハードルを跳ぶ", "jumping hurdles" ],
                 [ "バトンを受け取る", "receiving baton" ],
                 [ "バトンを渡す", "handing off baton" ],
-                [ "魔法を詠唱する", "casting a spell" ],
-                [ "剣を振る", "swinging a sword" ],
-                [ "弓を引く", "drawing a bow" ]
+                [ "魔法を詠唱する", "casting a spell" ]
             ],
             "感情や状態を表すポーズ": [
                 [ "考えるポーズ", "thinking pose" ],
@@ -658,6 +676,8 @@
                 [ "自信に満ちたポーズ", "confident pose" ],
                 [ "警戒しているポーズ", "cautious pose" ],
                 [ "落ち着いているポーズ", "calm pose" ],
+                [ "胸を強調するポーズ", "bust-enhancing pose" ],
+                [ "胸を寄せるポーズ", "bust-boosting pose" ],
                 [ "腕を組んで考える", "thinking with arms crossed" ],
                 [ "頭を抱えて悩む", "worrying with hands on head" ],
                 [ "天を仰いで嘆く", "lamenting while looking up at the sky" ],
@@ -717,7 +737,6 @@
                 [ "楽器を演奏する", "playing an instrument" ],
                 [ "物を持ち上げる", "lifting an object" ],
                 [ "物を運ぶ", "carrying an object" ],
-                [ "何かを指し示す", "pointing at something" ],
                 [ "魔法を放つポーズ", "casting magic pose" ],
                 [ "召喚のポーズ", "summoning pose" ],
                 [ "祝福するポーズ", "blessing pose" ],
@@ -730,7 +749,6 @@
             [ "妖艶な微笑み", "seductive smile" ],
             [ "アンニュイな表情", "ennui expression" ],
             [ "喜び", "joyful" ],
-            [ "悲しみ", "sad" ],
             [ "怒り", "angry" ],
             [ "驚き", "surprised" ],
             [ "不安", "anxious" ],
@@ -771,10 +789,10 @@
                 [ "鋭い眼差し", "sharp gaze" ],
                 [ "悲しげな眼差し", "sad gaze" ],
                 [ "怒りの眼差し", "angry gaze" ],
+                [ "誘うような視線", "inviting gaze" ],
                 [ "喜びに満ちた眼差し", "joyful gaze" ],
                 [ "驚いた眼差し", "surprised gaze" ],
                 [ "不安そうな眼差し", "anxious gaze" ],
-                [ "挑発的な眼差し", "provocative gaze" ],
                 [ "好奇心に満ちた眼差し", "curious gaze" ],
                 [ "疑いの眼差し", "suspicious gaze" ],
                 [ "冷たい眼差し", "cold gaze" ],
@@ -870,10 +888,8 @@
                     [ "セクシー", "sexy clothing" ],
                     [ "体にフィットした服", "body-hugging clothes" ],
                     [ "ランジェリー風", "lingerie-like clothing" ],
-                    [ "キャミソール", "camisole" ],
                     [ "ベビードール", "babydoll" ],
                     [ "ボディスーツ", "bodysuit" ],
-                    [ "コルセット", "corset" ],
                     [ "シースルー", "see-through clothing" ]
                 ],
                 "水着": [
@@ -919,7 +935,11 @@
                     [ "ダンスで服が乱れてはだけた", "clothing is disheveled and opened by dance" ],
                     [ "喧嘩で服がはだけた", "clothing is opened in a fight" ],
                     [ "衣服が一部破れている", "partially torn clothing" ],
-                    [ "シャツのボタンがいくつか外れている", "some shirt buttons are undone" ]
+                    [ "シャツのボタンがいくつか外れている", "some shirt buttons are undone" ],
+                    [ "濡れたTシャツ", "wet t-shirt" ],
+                    [ "服が体に張り付いている", "clothing clinging to body" ],
+                    [ "ボタンが外れて胸が見えそう", "unbuttoned shirt revealing cleavage" ],
+                    [ "胸の形がはっきりとわかる服", "clothing clearly showing bust shape" ]
                 ]
             },
             "トップス": [
@@ -962,7 +982,10 @@
                 [ "着物", "kimono" ],
                 [ "鎧", "armor" ],
                 [ "ローブ", "robe" ],
-                [ "体操服", "gym uniform top" ]
+                [ "体操服", "gym uniform top" ],
+                [ "タイトシャツ", "tight shirt" ],
+                [ "ローカットドレス", "low-cut dress" ],
+                [ "胸を強調するトップス", "bust-enhancing top" ]
             ],
             "ボトムス": [
                 [ "ボトムスなし", "no bottoms" ],
@@ -1021,8 +1044,7 @@
                     [ "ベビードール", "babydoll" ],
                     [ "テディ", "teddy" ],
                     [ "コルセット", "corset" ],
-                    [ "ビスチェ", "bustier" ],
-                    [ "ガーターベルト", "garter belt" ]
+                    [ "ビスチェ", "bustier" ]
                 ],
                 "レッグウェア": [
                     [ "ストッキング", "stockings" ],
@@ -1068,12 +1090,16 @@
                     [ "メッシュランジェリー", "mesh lingerie" ],
                     [ "リボン付きランジェリー", "ribbon lingerie" ],
                     [ "フリル付きランジェリー", "frilly lingerie" ],
-                    [ "ボディストッキング", "bodystocking" ]
+                    [ "ボディストッキング", "bodystocking" ],
+                    [ "シリコンブラ", "silicone bra" ],
+                    [ "ヌーブラ", "nu bra" ],
+                    [ "オープンクロッチ", "open crotch" ]
                 ]
             }
-        },
-        "アクセサリー": [
-            [ "なし", "no accessories" ],
+        }
+    },
+    "小道具": {
+        "基本的な小道具": [
             [ "ネックレス", "necklace" ],
             [ "チョーカー", "choker" ],
             [ "ペンダント", "pendant" ],
@@ -1094,9 +1120,6 @@
             [ "ヘッドドレス", "headdress" ],
             [ "ティアラ", "tiara" ],
             [ "クラウン", "crown" ],
-            [ "サングラス", "sunglasses" ],
-            [ "メガネ", "glasses" ],
-            [ "伊達メガネ", "fashion glasses" ],
             [ "腕時計", "watch" ],
             [ "懐中時計", "pocket watch" ],
             [ "スカーフ", "scarf" ],
@@ -1119,14 +1142,8 @@
             [ "扇子", "folding fan" ],
             [ "傘", "umbrella" ],
             [ "杖", "cane" ],
-            [ "魔法の杖", "magic wand" ],
-            [ "魔法の宝石", "magical jewel" ],
             [ "お守り", "amulet" ],
-            [ "腕輪", "armband" ]
-        ]
-    },
-    "小道具": {
-        "基本的な小道具": [
+            [ "腕輪", "armband" ],
             [ "本", "book" ],
             [ "ノート", "notebook" ],
             [ "ペン", "pen" ],
@@ -1151,6 +1168,8 @@
             [ "カメラ", "camera" ],
             [ "楽器", "instrument" ],
             [ "ぬいぐるみ", "stuffed toy" ],
+            [ "扇風機", "fan" ],
+            [ "香水", "perfume" ],
             [ "本を読んでいる", "reading a book" ],
             [ "スマートフォンを操作している", "using a smartphone" ],
             [ "タブレットを操作している", "using a tablet" ],
@@ -1189,6 +1208,7 @@
         ],
         "ファンタジーな小道具": [
             [ "魔法の杖", "magic wand" ],
+            [ "魔法の宝石", "magical jewel" ],
             [ "剣", "sword" ],
             [ "盾", "shield" ],
             [ "弓", "bow" ],
@@ -1208,6 +1228,7 @@
             [ "魔法の杖を振る", "waving a magic wand" ],
             [ "剣を構える", "wielding a sword" ],
             [ "盾を構える", "wielding a shield" ],
+            [ "剣を振る", "swinging a sword" ],
             [ "弓を引く", "drawing a bow" ],
             [ "矢を放つ", "shooting an arrow" ],
             [ "魔法の薬を飲んでいる", "drinking a magic potion" ],
@@ -1241,7 +1262,6 @@
             [ "ルーペ", "magnifying glass" ],
             [ "時計", "clock" ],
             [ "カレンダー", "calendar" ],
-            [ "地球儀", "globe" ],
             [ "風船", "balloon" ],
             [ "ポンポン", "pom-poms" ],
             [ "飲み物", "drink" ],
