@@ -2,9 +2,11 @@
 const promptSelector = document.getElementById('prompt-selector');
 const selectedList = document.getElementById('selected-list');
 const selectedPromptText = document.getElementById('selected-prompt-text');
-const addGroup = document.getElementById('add-group');
-const removeGroup = document.getElementById('remove-group');
+const addGroup = document.getElementById('add-group-button');
+const removeGroup = document.getElementById('remove-group-button');
+const importPromptDialog = document.getElementById("import-prompt-dialog");
 
+// 
 let promptOrder = [];
 // 選択されたプロンプトを格納する配列
 let selectedPrompts = [];
@@ -60,15 +62,17 @@ function sortPrompts() {
         .map(({ group }, index) => [group, index])
         .filter(([group]) => group)
         .reduce((map, [group, index]) => {
-            map[group] = Math.min(map[group] ?? Number.MAX_SAFE_INTEGER, promptOrder[`${selectedPrompts[index].keys}-${selectedPrompts[index].japaneseText}`]);
+            const a = map[group] ?? Number.MAX_SAFE_INTEGER;
+            const b = promptOrder[`${selectedPrompts[index].keys}-${selectedPrompts[index].japaneseText}`].index;
+            map[group] = Math.min(a, b);
             return map;
         }, {});
     selectedPrompts = selectedPrompts.sort((a, b) => {
         if (a.group == b.group) {
-            return promptOrder[`${a.keys}-${a.japaneseText}`] - promptOrder[`${b.keys}-${b.japaneseText}`];
+            return promptOrder[`${a.keys}-${a.japaneseText}`].index - promptOrder[`${b.keys}-${b.japaneseText}`].index;
         }
-        const aIndex = groupIndex[a.group] ?? promptOrder[`${a.keys}-${a.japaneseText}`];
-        const bIndex = groupIndex[b.group] ?? promptOrder[`${b.keys}-${b.japaneseText}`];
+        const aIndex = groupIndex[a.group] ?? promptOrder[`${a.keys}-${a.japaneseText}`].index;
+        const bIndex = groupIndex[b.group] ?? promptOrder[`${b.keys}-${b.japaneseText}`].index;
         return aIndex - bIndex;
     });
 }
@@ -248,8 +252,8 @@ function* promptOrderList(parentKeys, obj) {
     for (const child in obj) {
         const childKeys = [...parentKeys, child];
         if (Array.isArray(obj[child])) {
-            for (const [value] of obj[child]) {
-                yield [...childKeys, value];
+            for (const [value, text] of obj[child]) {
+                yield {keys : [...childKeys, value], text: text};
             }
         } else {
             yield* promptOrderList(childKeys, obj[child]);
@@ -261,16 +265,14 @@ function* promptOrderList(parentKeys, obj) {
  * プロンプトセレクターを初期化する関数
  */
 async function initializePromptSelector() {
-    const data = await loadData();
-    promptOrder = Object.fromEntries([...promptOrderList([], data)].map(p => p.join("-")).map((v, i) => [v, i]))
+    const loadPrompts = await loadData();
+    promptOrder = Object.fromEntries([...promptOrderList([], loadPrompts)].map((v, index) => [v.keys.join("-"), { index, text: v.text }]))
 
-    if (data) {
-        // 取得したデータをもとにカテゴリーを生成
-        for (const category in data) {
-            // トップレベルのカテゴリーから順に生成
-            createCategoryContainer(data[category], category)
-                .forEach(element => promptSelector.appendChild(element));
-        }
+    // 取得したデータをもとにカテゴリーを生成
+    for (const category in loadPrompts) {
+        // トップレベルのカテゴリーから順に生成
+        createCategoryContainer(loadPrompts[category], category)
+            .forEach(element => promptSelector.appendChild(element));
     }
 }
 
@@ -327,5 +329,152 @@ removeGroup.addEventListener("click", event => {
     addGroup.setAttribute("disabled", "");
     removeGroup.setAttribute("disabled", "");
 });
+
+document.querySelector("#open-import").addEventListener("click", () => {
+    importPromptDialog.showModal();
+});
+
+importPromptDialog.addEventListener("click", e => {
+    if (importPromptDialog == e.target) {
+        document.querySelector("#import-prompt-text").value = "";
+        document.querySelector("#import-after").textContent = "";
+        importPromptDialog.close();
+    }
+});
+
+function parseKeywords(keywordString) {
+    const result = [];
+    let currentString = "";
+    let inParentheses = false;
+    let currentArray = null;
+    for (let i = 0; i < keywordString.length; i++) {
+        const char = keywordString[i];
+        if (char === '(') {
+            inParentheses = true;
+            currentArray = [];
+            currentString = ""; // Reset currentString for the array
+        } else if (char === ')') {
+            inParentheses = false;
+            currentArray.push(currentString.trim());
+            result.push(currentArray);
+            currentArray = null;
+            currentString = ""; // Reset currentString for the next keyword
+        } else if (char === ',' && inParentheses) {
+            currentArray.push(currentString.trim());
+            currentString = "";
+        } else if (char === ',' && !inParentheses) {
+            if (currentString.trim() !== "") { //Prevent pushing empty string
+                result.push(currentString.trim());
+            }
+            currentString = "";
+        } else {
+            currentString += char;
+        }
+    }
+    // Process the last keyword if it's not inside parentheses
+    if (currentString.trim() !== "") {
+        result.push(currentString.trim());
+    }
+    return result;
+}
+  
+
+function importPromptPreview() {
+    /** @type {HTMLTextAreaElement} */
+    const input = document.querySelector("#import-prompt-text");
+    const words = parseKeywords(input.value);
+    const promptList = Object.entries(promptOrder);
+
+    const importPrompts = [];
+    let groupId = 1;
+    
+    for (const group of words) {
+        if (Array.isArray(group)) {
+            groupId++;
+
+            for (const word of group) {
+                const [key] = promptList.find(([key, {text}]) => text == word) ?? [];
+                if (key) {
+                    const keys = key.split("-");
+                    importPrompts.push({
+                        group: groupId,
+                        japaneseText: keys[keys.length - 1],
+                        keys: key.substring(0, key.lastIndexOf("-") - 1),
+                        text: word
+                    });
+                }
+            }
+        } else {
+            const [key] = promptList.find(([key, {text}]) => text == group) ?? [];
+            if (key) {
+                const keys = key.split("-");
+                importPrompts.push({
+                    japaneseText: keys[keys.length - 1],
+                    keys: key.substring(0, key.lastIndexOf("-") - 1),
+                    text: group
+                });
+            }
+        }
+    }
+    document.querySelector("#import-after").replaceChildren(...importPrompts.map(p => {
+        const prompt = document.createElement("span");
+        prompt.classList.add("border", "rounded", "p-1", "m-1");
+        prompt.append(p.japaneseText);
+        return prompt;
+    }));
+}
+
+function importPrompt() {
+    /** @type {HTMLTextAreaElement} */
+    const input = document.querySelector("#import-prompt-text");
+    const words = parseKeywords(input.value);
+    const promptList = Object.entries(promptOrder);
+
+    const importPrompts = [];
+    let groupId = 1;
+    
+    for (const group of words) {
+        if (Array.isArray(group)) {
+            groupId++;
+
+            for (const word of group) {
+                const [key] = promptList.find(([key, {text}]) => text == word) ?? [];
+                if (key) {
+                    const keys = key.split("-");
+                    importPrompts.push({
+                        group: groupId,
+                        japaneseText: keys[keys.length - 1],
+                        keys: key.substring(0, key.lastIndexOf("-")),
+                        text: word
+                    });
+                }
+            }
+        } else {
+            const [key] = promptList.find(([key, {text}]) => text == group) ?? [];
+            if (key) {
+                const keys = key.split("-");
+                importPrompts.push({
+                    japaneseText: keys[keys.length - 1],
+                    keys: key.substring(0, key.lastIndexOf("-")),
+                    text: group
+                });
+            }
+        }
+    }
+    for (const newPrompt of importPrompts) {
+        if (!selectedPrompts.some(p => p.text == newPrompt.text)) {
+            selectedPrompts.push(newPrompt);
+        }
+    }
+    updateSelectedPrompts();
+
+    document.querySelector("#import-prompt-text").value = "";
+    document.querySelector("#import-after").textContent = "";
+    importPromptDialog.close();
+}
+
+document.querySelector("#import-prompt-text").addEventListener("input", importPromptPreview);
+document.querySelector("#import-button").addEventListener("click", importPrompt);
+
 // プロンプトセレクターの初期化を開始
 initializePromptSelector();

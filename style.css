@@ -43,8 +43,10 @@
 
 #selected-prompts {
     position: sticky;
-    top: 1rem;
+    top: 0.25rem;
     background-color: #f8f9fa;
+    max-height: calc(100vh - 0.5rem);
+    overflow-y: auto;
 }
 
 #selected-list .btn {
@@ -58,4 +60,9 @@
     border-left: 2px solid lightgrey;
     padding-left: 0.25rem;
     margin: 0.25rem 0;
+}
+#import-prompt-dialog {
+    width: 50%;
+    min-width: 40rem;
+    max-width: 90%;
 }
