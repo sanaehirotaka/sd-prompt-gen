@@ -82,9 +82,19 @@ function sortPrompts() {
  */
 function updateSelectedPrompts() {
     sortPrompts();
+
     const list = document.createDocumentFragment();
 
+    for (const prompt of selectedPrompts) {
+        const button = Array.from(promptSelector.querySelectorAll('.option-button:not(.selected)'))
+            .find(button => button.dataset.category === prompt.keys && button.textContent === prompt.japaneseText);
+        if (button) {
+            button.classList.add('selected');
+        }
+    }
+
     for (const groupPrompt of getGroupedPrompts()) {
+
         const prompts = Array.isArray(groupPrompt) ? groupPrompt : [groupPrompt];
         let group = list;
         if (Array.isArray(groupPrompt)) {
