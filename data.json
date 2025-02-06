@@ -310,6 +310,7 @@
                 [ "男子学生", "school boy" ],
                 [ "女子学生", "school girl" ],
                 [ "チアリーダー", "cheerleader" ],
+                [ "アスリート", "athlete" ],
                 [ "陸上部員", "track and field athlete" ],
                 [ "アイドル", "idol" ]
             ],
@@ -660,6 +661,10 @@
                 [ "ハードルを跳ぶ", "jumping hurdles" ],
                 [ "バトンを受け取る", "receiving baton" ],
                 [ "バトンを渡す", "handing off baton" ],
+                [ "お辞儀をする", "bowing" ],
+                [ "お給仕する", "serving" ],
+                [ "膝まずく", "kneeling" ],
+                [ "敬礼する", "saluting" ],
                 [ "魔法を詠唱する", "casting a spell" ]
             ],
             "感情や状態を表すポーズ": [
@@ -678,6 +683,10 @@
                 [ "落ち着いているポーズ", "calm pose" ],
                 [ "胸を強調するポーズ", "bust-enhancing pose" ],
                 [ "胸を寄せるポーズ", "bust-boosting pose" ],
+                [ "服をずり下げる", "pulling down clothing" ],
+                [ "服をまくり上げる", "lifting up clothing" ],
+                [ "胸を隠す仕草", "gesture of hiding breasts" ],
+                [ "恥じらう仕草", "gesture of feeling embarrassed" ],
                 [ "腕を組んで考える", "thinking with arms crossed" ],
                 [ "頭を抱えて悩む", "worrying with hands on head" ],
                 [ "天を仰いで嘆く", "lamenting while looking up at the sky" ],
@@ -720,11 +729,9 @@
                 [ "胸に手を当てる", "hand on chest" ],
                 [ "頬に手を当てる", "hand on cheek" ],
                 [ "祈るポーズ", "praying pose" ],
-                [ "敬礼する", "saluting" ],
                 [ "腰をかがめる", "bending at the waist" ],
                 [ "後ろを向く", "facing away" ],
                 [ "横を向く", "facing sideways" ],
-                [ "膝をつく", "kneeling" ],
                 [ "うつ伏せになる", "lying on stomach" ],
                 [ "仰向けになる", "lying on back" ],
                 [ "壁にもたれかかる", "leaning against a wall" ],
@@ -734,7 +741,6 @@
                 [ "キスをする", "kissing" ],
                 [ "戦うポーズ", "fighting pose" ],
                 [ "武器を構える", "wielding a weapon" ],
-                [ "楽器を演奏する", "playing an instrument" ],
                 [ "物を持ち上げる", "lifting an object" ],
                 [ "物を運ぶ", "carrying an object" ],
                 [ "魔法を放つポーズ", "casting magic pose" ],
@@ -843,7 +849,16 @@
                     [ "カジュアル", "casual clothing" ],
                     [ "スポーティ", "sporty clothing" ],
                     [ "ストリート", "street fashion" ],
-                    [ "フォーマル", "formal clothing" ]
+                    [ "フォーマル", "formal clothing" ],
+                    [ "露出度の高い服", "revealing clothes" ],
+                    [ "セクシー", "sexy clothing" ],
+                    [ "体にフィットした服", "body-hugging clothes" ],
+                    [ "ランジェリー風", "lingerie-like clothing" ]
+                ],
+                "部屋着": [
+                    [ "ローブ", "robe" ],
+                    [ "パジャマ", "pajamas" ],
+                    [ "ルームウェア", "room wear" ]
                 ],
                 "服の柄": [
                     [ "無地の服", "plain clothing" ],
@@ -881,16 +896,11 @@
                     [ "消防士の制服", "firefighter uniform" ],
                     [ "ミリタリー", "military clothing" ],
                     [ "パイロットの制服", "pilot uniform" ],
-                    [ "シェフの制服", "chef uniform" ]
-                ],
-                "露出度が高い服装": [
-                    [ "露出度の高い服", "revealing clothes" ],
-                    [ "セクシー", "sexy clothing" ],
-                    [ "体にフィットした服", "body-hugging clothes" ],
-                    [ "ランジェリー風", "lingerie-like clothing" ],
-                    [ "ベビードール", "babydoll" ],
-                    [ "ボディスーツ", "bodysuit" ],
-                    [ "シースルー", "see-through clothing" ]
+                    [ "シェフの制服", "chef uniform" ],
+                    [ "クラシックメイド服", "classic maid uniform" ],
+                    [ "フレンチメイド服", "french maid uniform" ],
+                    [ "ゴスロリメイド服", "gothic lolita maid uniform" ],
+                    [ "チャイナメイド服", "china maid uniform" ]
                 ],
                 "水着": [
                     [ "水着", "swimsuit" ],
@@ -911,6 +921,7 @@
                     [ "競泳水着", "competition swimsuit" ],
                     [ "フィットネス水着", "fitness swimsuit" ],
                     [ "ビキニアーマー", "bikini armor" ],
+                    [ "貝殻のブラ", "shell bra" ],
                     [ "露出度の高い水着", "revealing swimsuit" ],
                     [ "露出度の低い水着", "modest swimsuit" ]
                 ],
@@ -939,7 +950,14 @@
                     [ "濡れたTシャツ", "wet t-shirt" ],
                     [ "服が体に張り付いている", "clothing clinging to body" ],
                     [ "ボタンが外れて胸が見えそう", "unbuttoned shirt revealing cleavage" ],
-                    [ "胸の形がはっきりとわかる服", "clothing clearly showing bust shape" ]
+                    [ "胸の形がはっきりとわかる服", "clothing clearly showing bust shape" ],
+                    [ "服が体に密着している", "clothes are clinging to the body" ],
+                    [ "胸の形が強調されている", "chest shape is emphasized" ],
+                    [ "ブラ紐が見えている", "bra strap is visible" ],
+                    [ "スカートがめくれ上がっている", "skirt is flipped up" ],
+                    [ "太ももが露わになっている", "thighs are exposed" ],
+                    [ "胸元が大きく開いている", "cleavage is deeply visible" ],
+                    [ "服が濡れて透けている", "clothes are wet and see-through" ]
                 ]
             },
             "トップス": [
@@ -954,7 +972,6 @@
                 [ "ホルターネック", "halter neck top" ],
                 [ "オフショルダー", "off-shoulder top" ],
                 [ "クロップドトップ", "cropped top" ],
-                [ "ビスチェ", "bustier" ],
                 [ "ボディスーツ", "bodysuit" ],
                 [ "タートルネック", "turtleneck" ],
                 [ "ニット", "knit sweater" ],
@@ -981,8 +998,8 @@
                 [ "ドレス", "dress" ],
                 [ "着物", "kimono" ],
                 [ "鎧", "armor" ],
-                [ "ローブ", "robe" ],
                 [ "体操服", "gym uniform top" ],
+                [ "ジム用タンクトップ", "gym tank top" ],
                 [ "タイトシャツ", "tight shirt" ],
                 [ "ローカットドレス", "low-cut dress" ],
                 [ "胸を強調するトップス", "bust-enhancing top" ]
@@ -1020,7 +1037,7 @@
                 [ "ジャージ", "jersey pants" ],
                 [ "スウェットパンツ", "sweatpants" ],
                 [ "袴", "hakama" ],
-                [ "ハーフパンツ", "gym shorts" ],
+                [ "ジム用ショートパンツ", "gym shorts" ],
                 [ "ブルマ", "bloomers" ]
             ],
             "靴": [
@@ -1035,7 +1052,8 @@
                 "基本的な下着": [
                     [ "下着なし", "no panties" ],
                     [ "ブラジャー", "bra" ],
-                    [ "ショーツ", "panties" ]
+                    [ "ショーツ", "panties" ],
+                    [ "スポーツブラ", "sports bra" ]
                 ],
                 "ランジェリー": [
                     [ "ランジェリー", "lingerie" ],
@@ -1048,15 +1066,12 @@
                 ],
                 "レッグウェア": [
                     [ "ストッキング", "stockings" ],
+                    [ "網タイツ", "fishnet stockings" ],
                     [ "タイツ", "tights" ],
+                    [ "レッグウォーマー", "leg warmers" ],
                     [ "ハイソックス", "high socks" ],
                     [ "ニーソックス", "knee socks" ],
                     [ "ソックス", "socks" ]
-                ],
-                "部屋着": [
-                    [ "ローブ", "robe" ],
-                    [ "パジャマ", "pajamas" ],
-                    [ "ルームウェア", "room wear" ]
                 ],
                 "男性下着": [
                     [ "ブリーフ", "briefs" ],
@@ -1069,7 +1084,6 @@
                     [ "ペチコート", "petticoat" ],
                     [ "ブラレット", "bralette" ],
                     [ "ノンワイヤーブラ", "non-wired bra" ],
-                    [ "スポーツブラ", "sports bra" ],
                     [ "プランジブラ", "plunge bra" ],
                     [ "ハーフカップブラ", "half cup bra" ],
                     [ "フルカップブラ", "full cup bra" ],
@@ -1092,8 +1106,12 @@
                     [ "フリル付きランジェリー", "frilly lingerie" ],
                     [ "ボディストッキング", "bodystocking" ],
                     [ "シリコンブラ", "silicone bra" ],
-                    [ "ヌーブラ", "nu bra" ],
-                    [ "オープンクロッチ", "open crotch" ]
+                    [ "ヌーブラ", "nu bra" ]
+                ],
+                "下着の状態": [
+                    [ "ブラジャーの肩紐が見える", "bra strap visible" ],
+                    [ "ブラジャーのアンダーバンドが見える", "bra underband visible" ],
+                    [ "ブラジャーが透けて見える", "bra visible through clothing" ]
                 ]
             }
         }
@@ -1131,9 +1149,6 @@
             [ "アームレット", "armlet" ],
             [ "グローブ", "gloves" ],
             [ "レースの手袋", "lace gloves" ],
-            [ "網タイツ", "fishnet stockings" ],
-            [ "タイツ", "tights" ],
-            [ "レッグウォーマー", "leg warmers" ],
             [ "ショルダーバッグ", "shoulder bag" ],
             [ "ハンドバッグ", "handbag" ],
             [ "リュックサック", "backpack" ],
