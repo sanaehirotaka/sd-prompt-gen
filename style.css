@@ -43,23 +43,32 @@
 
 #selected-prompts {
     position: sticky;
-    top: 0.25rem;
+    top: .25rem;
     background-color: #f8f9fa;
     max-height: calc(100vh - 0.5rem);
     overflow-y: auto;
 }
 
+#selected-list .group {
+    margin-right: 5px;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+.braces::before {
+    content: "(";
+    font-weight: bold;
+    margin-right: 2px;
+}
+.braces::after {
+    content: ")";
+    font-weight: bold;
+    margin-left: 2px;
+}
+
 #selected-list .btn {
     --bs-btn-padding-y: .25rem;
     --bs-btn-padding-x: .5rem;
-}
-#selected-list li {
-    margin: 0.1rem 0;
-}
-#selected-list ul {
-    border-left: 2px solid lightgrey;
-    padding-left: 0.25rem;
-    margin: 0.25rem 0;
 }
 #import-prompt-dialog {
     width: 50%;
